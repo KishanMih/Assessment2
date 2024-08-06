@@ -37,21 +37,23 @@
           25%
         </div>
 </div>
-     <div class="col-4 m-auto">
-        <form    #userLogin="ngForm" (ngSubmit)="onSubmit(userLogin.value)" class="w-100">
+     <div class="col-4 m-auto card mt-5">
+        <div class="card-header">User Task Assign Form</div>
+        <form    #userLogind="ngForm" (ngSubmit)="onSubmit(userLogind.value)" class="w-100 card-body">
             <div>
-                <label  class="form-label"> Team Select</label><select class="form-select" name="team">
+                
+                <label  class="form-label"> Team Select</label><select  (change)="onChange($event)" class="form-select"ngModel required name="team">
                     <option value=""  >Team Select</option>
                     <option value="Frontend">Frontend</option>
-                    <option value="backend">backend</option>
+                    <option value="backend">Backend</option>
                 </select>
             </div>
-            <div><label for="userassign" class="form-label">User Name</label><select  id="userassign" type="text" class="form-select" name="userasign">
+            <div><label for="userassign" class="form-label">User Name</label><select  id="userassign" type="text"ngModel required class="form-select" name="userasign">
                 <option value=""  >User Select</option>
-              <option value="Praful">Praful kindre</option>
-              <option value="Prawal_bonde">Prawal bonde</option>  
-              <option value="Puja gupta">Praful kindre</option>
-              <option value="Nilesh Ingle">Prawal bonde</option>
+              <option *ngIf="selectedDevice=='Frontend' " value="Praful">Praful kindre</option>
+              <option *ngIf="selectedDevice=='Frontend'"  value="Prawal_bonde">Prawal bonde</option>  
+              <option *ngIf="selectedDevice=='backend'" value="Puja gupta">Puja gupta</option>
+              <option *ngIf="selectedDevice=='backend'" value="Nilesh Ingle">Nilesh Ingle</option>
             </select></div>
               <div class="d-flex text-end w-100">
                 <div><button class="btn btn-danger m-2" (click)="reateformclose()">Cancel</button></div>

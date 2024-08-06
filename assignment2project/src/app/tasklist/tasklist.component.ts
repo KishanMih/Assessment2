@@ -33,12 +33,12 @@ export class TasklistComponent implements OnInit{
   public checkoutForm: any;
   public createform:boolean=false;
   public updateform:boolean=false;
-  filteredData: any[] = []; // stored filled value 
-  filterTitle: string = '';
-  filtersn: any;
+  public  filteredData: any[] = []; // stored filled value 
+  public filterTitle: string = '';
+   public filtersn: any;
   row: any;
   public projectdetailspage:boolean=false;
-selectedData: any;
+  public selectedData: any;
 
 applyFilter(columnName: string): void {
   let filterValue: string|number;

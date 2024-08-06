@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ],
+  imports: [CommonModule, FormsModule,ToastrModule ],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
 })
@@ -13,10 +16,15 @@ export class ProjectListComponent {
 selectedProject: any;
 @Output() sendDataEvent = new EventEmitter<string>();
 public userasign:boolean=false;
+public selectedDevice:any
+item: any;
 sendData(): void {
   const dataToSend = 'Hello from Child!';
   this.sendDataEvent.emit(dataToSend);
 }
+
+
+
 handleRowSelection(selectedData: any): void {debugger;
   console.log('Received selected data:', selectedData);
   // Perform actions with the selected data
@@ -33,6 +41,7 @@ handleRowSelection(selectedData: any): void {debugger;
   constructor(){
     
   }
+  
   progress = 0; // Initial progress value
 
   incrementProgress(): void {
@@ -40,15 +49,21 @@ handleRowSelection(selectedData: any): void {debugger;
       this.progress += 10; // Increase progress by 10%
     }
   }
-  onSubmit(formData: any) {
+  formData={
+    team:'' ,
+    userasign:''
+  }
+  onSubmit(formDatas: any) {
+    debugger
     let obj;
-    formData.team;
-    formData.userasign;
+    formDatas.team;
+    formDatas.userasign;
     obj = {
-      team:formData.team,
-      userasign:formData.userasign,
+      team:formDatas.team,
+      userasign:formDatas.userasign,
       projectName:this.inputData.Title
     }
+    
   }
   reateformclose(){
     this.userasign=false;
@@ -56,4 +71,11 @@ handleRowSelection(selectedData: any): void {debugger;
   openform(){
     this.userasign=true;
   }
+  onChange(event:any) {
+    debugger;
+    let target=event.target.value
+    console.log(this.selectedDevice = target );
+    // I want to do something here with the new selectedDevice, but what I
+    // get here is always the last selection, not the one I just selected.
+}
 }
