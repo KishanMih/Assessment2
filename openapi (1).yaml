@@ -1,0 +1,391 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: API for managing tasks, projects, and comments
+  version: 1.0.0
+tags:
+  - name: tasks
+    description: Everything about tasks
+  - name: projects
+    description: Everything about projects
+paths:
+  /tasks:
+    get:
+      tags:
+        - tasks
+      summary: Retrieve a list of tasks
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      tags:
+        - tasks
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task created successfully
+  /tasks/{id}:
+    get:
+      tags:
+        - tasks
+      summary: Retrieve details of a specific task by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Details of the task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+    put:
+      tags:
+        - tasks
+      summary: Update an existing task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: Task updated successfully
+    delete:
+      tags:
+        - tasks
+      summary: Delete a specific task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Task deleted successfully
+  /projects:
+    get:
+      tags:
+        - projects
+      summary: Retrieve a list of projects
+      responses:
+        '200':
+          description: A list of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      tags:
+        - projects
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Project created successfully
+  /projects/{id}:
+    get:
+      tags:
+        - projects
+      summary: Retrieve details of a specific project by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Details of the project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+    put:
+      tags:
+        - projects
+      summary: Update an existing project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          description: Project updated successfully
+    delete:
+      tags:
+        - projects  
+      summary: Delete a specific project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Project deleted successfully
+  /tasks/{id}/assign:
+    post:
+      tags:
+        - tasks
+      summary: Assign a task to a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskAssignment'
+      responses:
+        '200':
+          description: Task assigned successfully
+  /tasks/{id}/usassign:
+    delete:
+      tags:
+        - tasks
+      summary: Unassign a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task usassigned successfully
+  /tasks/{id}/comments:
+    post:
+      tags:
+        - tasks
+      summary: Add a comment to a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comment added successfully
+    get:
+      tags:
+        - tasks
+      summary: Retrieve all comments on a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+  /tasks/{task_id}/comments/{comment_id}:
+    delete:
+      tags:
+        - tasks
+      summary: Delete a specific comment of a specific task
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comment deleted successfully
+  /tasks/{id}/complete:
+    post:
+      tags:
+        - tasks
+      summary: Mark a task as completed
+      description: Marks the task as completed only if it's in 'In Progress' status and logs the completion time.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task marked as completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid task status
+        '404':
+          description: Task not found
+  /tasks/overdue:
+    get:
+      tags:
+        - tasks
+      summary: Retrieve overdue tasks
+      description: Returns a list of tasks that are overdue based on the current date and notifies assigned users via simulated email notifications.
+      responses:
+        '200':
+          description: List of overdue tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+  /projects/{id}/progress:
+    get:
+      tags:
+        - projects
+      summary: Retrieve project progress
+      description: Calculates and returns the progress of a project based on the completion status of its tasks, optionally weighting tasks by priority.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project progress percentage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  progress:
+                    type: number
+                    format: float
+                    description: The progress of the project as a percentage
+        '404':
+          description: Project not found
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - To Do
+            - In Progress
+            - Completed
+        priority:
+          type: string
+          enum:
+            - Low
+            - Medium
+            - High
+        due_date:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Project:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    TaskAssignment:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        assigned_at:
+          type: string
+          format: date-time
+    Comment:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+        user:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time

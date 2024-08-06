@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { UserassignpComponent } from "../userassignp/userassignp.component";
 
 
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, FormsModule,ToastrModule ],
+  imports: [CommonModule, FormsModule, ToastrModule, UserassignpComponent],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
 })
@@ -16,7 +17,9 @@ export class ProjectListComponent {
 selectedProject: any;
 @Output() sendDataEvent = new EventEmitter<string>();
 public userasign:boolean=false;
-public selectedDevice:any
+public taskassignstore:any
+public selectedDevice:any;
+// @Output() rowSelected = new EventEmitter<any>()
 item: any;
 sendData(): void {
   const dataToSend = 'Hello from Child!';
@@ -31,12 +34,7 @@ handleRowSelection(selectedData: any): void {debugger;
 }
 @Output() rowSelected = new EventEmitter<any>();
    public projectUpdate :boolean=true;
-  emitData(): void {
-    const item = { id: 1, name: 'Example Item' }; // Example data
-    this.rowSelected.emit(item);
-    console.log(item)
-    console.log( this.inputData)
-  }
+ 
   @Input() inputData: any;
   constructor(){
     
@@ -61,9 +59,10 @@ handleRowSelection(selectedData: any): void {debugger;
     obj = {
       team:formDatas.team,
       userasign:formDatas.userasign,
-      projectName:this.inputData.Title
+      projectName:this.inputData.Title,
+      projectstartdate:this.inputData.Title
     }
-    
+    // this.taskassignstore=
   }
   reateformclose(){
     this.userasign=false;
