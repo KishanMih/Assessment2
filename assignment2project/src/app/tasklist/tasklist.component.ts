@@ -1,24 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, ViewChild , OnInit, Output, EventEmitter,} from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder, FormsModule} from '@angular/forms';
+import { ProjectListComponent } from "../project-list/project-list.component";
 
 @Component({
   selector: 'app-tasklist',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, ProjectListComponent],
   templateUrl: './tasklist.component.html',
   styleUrl: './tasklist.component.scss'
 })
-export class TasklistComponent {
+export class TasklistComponent implements OnInit{
+  
 
   @ViewChild('myTableRef') myTableRef: ElementRef | undefined;
 
   // public myTableRef:any 
   public taskdata:any;
   public tablelistdata:boolean=true;
+  // child: any;
+  @Output() rowSelected = new EventEmitter<any>()
   public selecttrvalue:any= {
     ID: '',
     priority: '',
+    start_date: '',
     Due_date: '',
     Title: '',
     status: ''
@@ -31,7 +36,9 @@ export class TasklistComponent {
   filteredData: any[] = []; // stored filled value 
   filterTitle: string = '';
   filtersn: any;
-row: any;
+  row: any;
+  public projectdetailspage:boolean=false;
+selectedData: any;
 
 applyFilter(columnName: string): void {
   let filterValue: string|number;
@@ -61,6 +68,7 @@ constructor(){
       "Title":"Office Open time",
       "status":"Pending",
       "priority":"Mideum",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     },
     {
@@ -68,6 +76,7 @@ constructor(){
       "Title":"Payment collection",
       "status":"success",
       "priority":"High",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     },
     {
@@ -75,6 +84,7 @@ constructor(){
       "Title":"office close time",
       "status":"Pending",
       "priority":"High",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     },
     {
@@ -82,6 +92,7 @@ constructor(){
       "Title":"Doctors daily reports",
       "status":"reject",
       "priority":"High",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     },
     {
@@ -89,6 +100,7 @@ constructor(){
       "Title":"appointment date",
       "status":"success",
       "priority":"High",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     },
     {
@@ -96,10 +108,13 @@ constructor(){
       "Title":"exray list",
       "status":"success",
       "priority":"Low",
+      "start_date":"01-08-2024",
       "Due_date":"05-08-2024"
     }
   ]
   this.filteredData = [...this.taskdata];
+}
+ngOnInit(): void {
 }
 
 trdelete(x:any){
@@ -137,6 +152,8 @@ onSubmit(formData: any) {
   formData.title = formData.title;
   formData.updateID = formData.updateID;
   formData.updatepriority = formData.updatepriority;
+  
+  formData.updatestart_date = formData.updatestart_date;
   formData.updateDue_date = formData.updateDue_date;
   formData.updatetitle = formData.updatetitle;
 
@@ -145,6 +162,7 @@ onSubmit(formData: any) {
       sn: formData.ID,
       status: formData.taskstatus,
       priority: formData.priority,
+      start_date: formData.start_date,
       Due_date: formData.Due_date,
       Title: formData.title
     };
@@ -156,6 +174,8 @@ onSubmit(formData: any) {
       sn: formData.updatepriority,
       status: formData.updatetaskstatus,
       priority: formData.updatepriority,
+      
+      start_date: formData.updatestart_date, 
       Due_date: formData.updateDue_date, 
       Title: formData.updatetitle
     };
@@ -178,6 +198,27 @@ createformclose(){
   this.createform=false;
   this.tablelistdata=true;
   this.updateform=false;
+}
+
+projectdetails(event: Event, item: any, index: number) {
+  debugger
+  this.tablelistdata = false;
+  this.updateform = false;
+  this.selecttrvalue = item;
+  this.selecttrindex_update=index;
+  this.projectdetailspage=true;
+  console.log(item)
+ console.log( this.rowSelected.emit(this.selecttrvalue ));
+}
+
+onRowSelect(item: any): void {
+  console.log('Row selected:', item);
+
+  this.tablelistdata = false;
+  this.updateform = false;
+  this.projectdetailspage=true;
+  this.selecttrvalue=item;
+ console.log( this.rowSelected.emit(item));
 }
 
 }

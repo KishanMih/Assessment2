@@ -1,1 +1,62 @@
-<p>project-list works!</p>
+<div >
+    <!-- <h2>{{ rowSelected}}</h2> -->
+    
+    <div class="col-12">
+        <div class="mt-5"><b>Project details </b></div> 
+        <div class="col-4 m-auto p-3 project-box-shadow" (click)="openform()" >
+            <h1><i class="fa-solid fa-sheet-plastic p" style="color: #000000;font-size: 100px;"></i></h1>
+            <div class="col-11 d-flex">
+                <div class="col-6"><span>Project name</span></div>:<div class="col-6 ps-2"><span><b>{{inputData.Title}}</b></span></div>
+                
+            </div>
+            
+              <div class=" col-11">
+                <div class="d-flex">
+                    <label for="" class="col-6">start date</label>:<input type="text" type="text" class="border-0 col-6 ps-2"  value={{inputData.start_date}}>
+                </div>
+                <div class="d-flex">
+                    <label for=""  class="col-6">end date</label>:<input type="text" type="text" class="border-0 col-6 ps-2" value={{inputData.Due_date}}>
+                </div>
+            </div>
+            <div class="col-11 d-flex">
+                <div class="col-6"><span><b>Decriptions</b></span></div>:<div class=" col-6 ps-2"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit..</span></div>
+                
+            </div>
+           
+     
+      </div>
+      <div class="progress col-4 m-auto mt-4" style="height: 20px">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style="width: 25%"
+          aria-valuenow="25"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          25%
+        </div>
+</div>
+     <div class="col-4 m-auto">
+        <form    #userLogin="ngForm" (ngSubmit)="onSubmit(userLogin.value)" class="w-100">
+            <div>
+                <label  class="form-label"> Team Select</label><select class="form-select" name="team">
+                    <option value=""  >Team Select</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="backend">backend</option>
+                </select>
+            </div>
+            <div><label for="userassign" class="form-label">User Name</label><select  id="userassign" type="text" class="form-select" name="userasign">
+                <option value=""  >User Select</option>
+              <option value="Praful">Praful kindre</option>
+              <option value="Prawal_bonde">Prawal bonde</option>  
+              <option value="Puja gupta">Praful kindre</option>
+              <option value="Nilesh Ingle">Prawal bonde</option>
+            </select></div>
+              <div class="d-flex text-end w-100">
+                <div><button class="btn btn-danger m-2" (click)="reateformclose()">Cancel</button></div>
+                <div><button type="submit"class=" btn btn-success m-2">Save</button></div>
+              </div>
+        </form>
+     </div>
+</div>
